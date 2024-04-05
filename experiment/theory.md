@@ -2,7 +2,7 @@
 
 ## Monomials
 
-A monomial is an expression consisting of a single term. It is composed of a constant, a variable, or the product of constants and variables raised to non-negative integer exponents.<br>
+A monomial [to be changed] is an expression consisting of a single term. It is composed of a constant, a variable, or the product of constants and variables raised to non-negative integer exponents.<br>
 For Example: A monomial M with m variables,can be expressed as:<br>
  $$M = {x_1}^{i_1}{x_2}^{i_2}{x_3}^{i_3}......{x_m}^{i_m}$$
  where  ${x_1},{x_2},{x_3},......,{x_m}$ are variables,<br>
