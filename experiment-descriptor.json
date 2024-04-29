@@ -37,20 +37,6 @@
       "content-type": "text"
     },
     {
-      "target": "dimension_linear_block.html",
-      "source": "simulation/dimension_linear_block.html",
-      "label": "Review of Block Codes",
-      "unit-type": "task",
-      "content-type": "simulation"
-    },
-    {
-      "target": "parity_check.html",
-      "source": "simulation/parity_check.html",
-      "label": "Parity Check Matrix",
-      "unit-type": "task",
-      "content-type": "simulation"
-    },
-    {
       "target": "posttest.html",
       "source": "posttest.json",
       "label": "Posttest",
