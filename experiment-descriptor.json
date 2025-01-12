@@ -37,6 +37,13 @@
       "content-type": "text"
     },
     {
+      "target": "index.html",
+      "source": "simulation/index.html",
+      "label": "Reed Muller",
+      "unit-type": "task",
+      "content-type": "simulation"
+    },
+    {
       "target": "posttest.html",
       "source": "posttest.json",
       "label": "Posttest",
