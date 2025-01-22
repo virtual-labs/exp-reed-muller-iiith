@@ -5,10 +5,10 @@
   "LaTeXinMD": true,
   "units": [
     {
-      "unit-type": "aim",
       "target": "aim.html",
       "source": "aim.md",
       "label": "Aim",
+      "unit-type": "task",
       "content-type": "text"
     },
 
