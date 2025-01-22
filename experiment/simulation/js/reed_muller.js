@@ -35,7 +35,7 @@ function generateRandomBinaryMonomial() {
 
     // Format the monomial
     const formattedMonomial = selectedVariables
-        .map(num => `x_${num}`)
+        .map(num => `X_${num}`)
         .join('');
 
     return formattedMonomial;
@@ -104,7 +104,7 @@ function evaluateMonomial(monomial, variableValues) {
     // Process each variable in the monomial
     for (let variable of variables) {
         // Convert variable (e.g., 'x1', 'x2', etc.) to array index
-        const index = parseInt(variable.replace('x', '')) - 1;
+        const index = parseInt(variable.replace('X', '')) - 1;
 
         // If the index is valid, multiply result by the variable's value
         if (index >= 0 && index < variableValues.length) {

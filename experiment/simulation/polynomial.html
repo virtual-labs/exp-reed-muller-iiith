@@ -15,6 +15,8 @@
 
 	<script type="text/javascript" id="MathJax-script" async
 		src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+	
 	<!-- Load d3.js -->
 	<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
@@ -32,11 +34,11 @@
 				<ul>
 					<li id="Task1" onclick="window.location.href = 'index.html';">
 						<a>
-							Monomial 
+							Monomial
 						</a>
 					</li>
 
-					<li class="is-active" id="Task2" >
+					<li class="is-active" id="Task2">
 						<a>
 							Polynomial
 						</a>
@@ -103,9 +105,9 @@
 	<div class="columns is-centered">
 		<div class="column is-11-desktop is-12-tablet is-12-mobile">
 			<div class="v-datalist-container components-list" id="questionStatement">
-				<p id="monomialQuestion"> Consider the given monomial : \(M (\mathbf{x})\) = </p>
+				<p id="monomialQuestion"> Consider the given Polynomial : </p>
 				<div id="monomial">
-					
+
 				</div>
 			</div>
 		</div>
@@ -120,15 +122,18 @@
 					<p style="margin-bottom: 20px;">Enter the degree of the monomial</p>
 
 					<div style="margin-bottom: 20px; vertical-align: middle;">
-						<label for="degreeInput"> Degree: </label> <input type="number" id="degreeInput" style="width: 50px; text-align: center; margin: 2px auto;"/>
-						<button style="margin-top: 20px;" class="v-button" role="button" onclick="checkDegree()">Check</button>
+						<label for="degreeInput"> Degree: </label> <input type="number" id="degreeInput"
+							style="width: 50px; text-align: center; margin: 2px auto;" />
+						<button style="margin-top: 20px;" class="v-button" role="button"
+							onclick="checkDegree()">Check</button>
 					</div>
 				</section>
 
 				<section id="evaluationQuestion" style="display:none;">
 					<h3>Reed-Muller Code Evaluation</h3>
-					<p>Enter the evaluation vector values corresponding to each index tuple \(x_1, x_2, \ldots, x_{n}\):</p>
-					
+					<p>Enter the evaluation vector values corresponding to each index tuple \(x_1, x_2, \ldots, x_{n}\):
+					</p>
+
 					<div class="eval-vector-inputs">
 						<table>
 							<thead>
@@ -142,10 +147,10 @@
 							</tbody>
 						</table>
 					</div>
-				
+
 					<!-- <p id="receivedVectors"></p> -->
 					<br>
-					
+
 					<button class="v-button" role="button" onclick="checkRMEvaluation()">Check</button>
 					<button class="v-button" role="button" onclick="prevRMQuestion()">Previous</button>
 				</section>
@@ -163,7 +168,7 @@
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
-	<script src="./js/reed_muller.js"></script>
+	<script src="./js/polynomial.js"></script>
 </body>
 
 </html>

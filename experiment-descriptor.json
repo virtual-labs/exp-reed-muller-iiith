@@ -6,7 +6,7 @@
   "units": [
     {
       "unit-type": "aim",
-      "target": "index.html",
+      "target": "aim.html",
       "source": "aim.md",
       "label": "Aim",
       "content-type": "text"
