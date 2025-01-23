@@ -5,10 +5,10 @@
   "LaTeXinMD": true,
   "units": [
     {
-      "unit-type": "aim",
-      "target": "index.html",
+      "target": "aim.html",
       "source": "aim.md",
       "label": "Aim",
+      "unit-type": "task",
       "content-type": "text"
     },
 
@@ -35,6 +35,13 @@
       "label": "Procedure",
       "unit-type": "task",
       "content-type": "text"
+    },
+    {
+      "target": "index.html",
+      "source": "simulation/index.html",
+      "label": "Reed Muller",
+      "unit-type": "task",
+      "content-type": "simulation"
     },
     {
       "target": "posttest.html",
