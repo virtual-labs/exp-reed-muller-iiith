@@ -1,152 +1,312 @@
-// Global variables
-let m = 0;  // Number of variables
-let r = 0;  // Order of Reed-Muller code
-let generatorMatrix = [];
-let parityCheckMatrix = [];
-let currentLRow = 0;
-let currentPRow = 0;
-let matrixLength = 0;
+// Constants for polynomial generation
+const maxDegree = 3;
+const maxVariables = 3;
+let polynomial = []; // Array of monomials, where each monomial is an array of variables
+let maxPolynomialDegree = 0;
 
-// Initialize when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    generateReedMullerCode();
+// Global variables to store state
+let currentEvalVectors = [];
+let correctAnswers = [];
+
+// Function to format monomial in LaTeX
+function formatMonomial(monomial) {
+    if (!monomial) return '';
+    if (monomial.length === 0) return '\\(1\\)';
+    return `\\(X_{${monomial.join('}X_{')}}\\)`;
+}
+
+// Function to generate monomials of specific degree
+function generateMonomials(degree, m) {
+    const monomials = [];
+
+    function generateCombinations(arr, size, start = 0, current = []) {
+        if (current.length === size) {
+            monomials.push([...current]);
+            return;
+        }
+        for (let i = start; i < arr.length; i++) {
+            current.push(arr[i]);
+            generateCombinations(arr, size, i + 1, current);
+            current.pop();
+        }
+    }
+
+    if (degree === 0) {
+        monomials.push([]); // Constant term
+    } else {
+        const variables = Array.from({ length: m }, (_, i) => i + 1);
+        generateCombinations(variables, degree);
+    }
+    return monomials;
+}
+
+// Function to generate a random binary polynomial
+function generateRandomBinaryMonomial() {
+    // Generate random number of terms (1 to 4)
+    const numTerms = Math.floor(Math.random() * 4) + 1;
+
+    // Clear previous polynomial
+    polynomial = [];
+    maxPolynomialDegree = 0;
+
+    // Generate terms
+    for (let i = 0; i < numTerms; i++) {
+        // For each term, decide if it's a constant (1) or a monomial
+        const isConstant = Math.random() < 0.2; // 20% chance of being constant
+
+        if (isConstant) {
+            polynomial.push([]); // Empty array represents constant term 1
+        } else {
+            // Generate random degree (1 to maxDegree) for this monomial
+            const degree = Math.floor(Math.random() * maxDegree) + 1;
+            maxPolynomialDegree = Math.max(maxPolynomialDegree, degree);
+
+            // Get all possible monomials of this degree
+            const possibleMonomials = generateMonomials(degree, maxVariables);
+            // Select a random monomial
+            const selectedMonomial = possibleMonomials[Math.floor(Math.random() * possibleMonomials.length)];
+
+            // add only if selected monomial is not already present
+            if (!polynomial.find(m => m.join('') === selectedMonomial.join(''))) { polynomial.push(selectedMonomial); }
+        }
+    }
+
+    // Format the polynomial for display
+    return formatPolynomial(polynomial);
+}
+
+function formatPolynomial(poly) {
+    if (poly.length === 0) return "0";
+
+    // Sort the polynomial terms by degree (length of the term array)
+    poly.sort((a, b) => a.length - b.length);
+
+    let constantTerm = true;
+
+    let result = [];
+
+    poly.forEach((term) => {
+        if (term.length === 0 && constantTerm) {
+            constantTerm = false;
+            result.push("1"); // Add "1" for the constant term
+        } else if (term.length > 0) {
+            // Format the term
+            const formattedTerm = term.length === 1
+                ? `X_{${term[0]}}`  // Single exponent
+                : `X_{${term.join('}X_{')}}`; // Multiple exponents
+            result.push(formattedTerm);
+        }
+    });
+
+    // Join the terms with " + " to form the final polynomial string
+    return result.join(' + ');
+}
+
+
+// Function to initialize and display the polynomial
+function initializeMonomial() {
+    const polynomialElement = document.getElementById('monomial');
+    if (polynomialElement) {
+        const randomPolynomial = generateRandomBinaryMonomial();
+        console.log(polynomialElement)
+        // MathJax.typesetClear([polynomialElement]);
+        polynomialElement.innerHTML = `\\(M (\\mathbf{X}) = ${randomPolynomial}\\)`;
+
+        if (window.MathJax) {
+            console.log(polynomialElement)
+            MathJax.typesetPromise([polynomialElement])
+                .then(() => {
+                    console.log('MathJax typeset completed successfully');
+                })
+                .catch((err) => {
+                    console.log('MathJax encountered an error during typesetting:', err);
+                });
+        }
+    }
+}
+
+// Function to generate all possible binary tuples for given length
+function generateBinaryTuples(length) {
+    const tuples = [];
+    const total = Math.pow(2, length);
+
+    for (let i = 0; i < total; i++) {
+        const binary = i.toString(2).padStart(length, '0');
+        tuples.push(binary.split('').map(Number));
+    }
+
+    return tuples;
+}
+
+// Function to evaluate a polynomial for given variable values
+function evaluatePolynomial(variableValues) {
+    let result = 0;
+
+    // Evaluate each monomial in the polynomial
+    for (const monomial of polynomial) {
+        let monomialResult = 1;
+
+        // If monomial is empty array (constant term 1), keep monomialResult as 1
+        if (monomial.length > 0) {
+            for (const variable of monomial) {
+                monomialResult *= variableValues[variable - 1];
+            }
+        }
+
+        // XOR the results (addition in F2)
+        result ^= monomialResult;
+    }
+
+    return result;
+}
+
+function checkDegree() {
+    const degreeElement = document.getElementById('degreeInput');
+    const degreeValue = parseInt(degreeElement.value);
+    const observations = document.getElementById('observation');
+
+    if (degreeValue === maxPolynomialDegree) {
+        observations.innerHTML = "Correct!";
+        observations.style.color = "green";
+        document.getElementById('degreeQuestion').style.display = 'none';
+        document.getElementById('evaluationQuestion').style.display = 'block';
+    } else {
+        observations.innerHTML = "Incorrect!";
+        observations.style.color = "red";
+    }
+}
+
+// Function to create a styled input cell
+function createInputCell() {
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '0';
+    input.max = '1';
+    input.className = 'eval-input';
+    input.style.width = '40px';
+    input.style.height = '40px';
+    input.style.margin = '0 5px';
+    input.style.textAlign = 'center';
+    input.style.fontSize = '16px';
+    return input;
+}
+
+// Function to initialize the evaluation table horizontally,
+// grouping each tuple and its input into the same wrapper div
+function initializeEvalTable() {
+    const tuples = generateBinaryTuples(maxVariables);
+    currentEvalVectors = tuples;
+    correctAnswers = tuples.map(tuple => evaluatePolynomial(tuple));
+
+    const container = document.querySelector('.eval-vector-inputs');
+    container.innerHTML = '';
+    container.style.display = 'flex';
+    container.style.justifyContent = 'center';
+    // container.style.flexDirection = 'column';
+    container.style.alignItems = 'center';
+
+    // Outer flex container to lay out each tuple+input group in a row
+    const flexContainer = document.createElement('div');
+    flexContainer.style.display = 'flex';
+    // applies the flex‑wrap style
+    flexContainer.style.flexWrap = 'wrap';
+    flexContainer.style.gap = '20px';
+    flexContainer.style.alignItems = 'center';
+    flexContainer.style.padding = '20px';
+    // flexContainer.style.overflowX = 'auto';
+
+    tuples.forEach((tuple, index) => {
+        // Wrapper for one tuple + its input
+        const groupDiv = document.createElement('div');
+        // groupDiv.style.display = 'flex';
+        // groupDiv.style.flexDirection = 'column';
+        groupDiv.style.alignItems = 'center';
+        groupDiv.style.gap = '8px';
+
+        // Tuple display
+        const tupleDiv = document.createElement('div');
+        tupleDiv.style.textAlign = 'center';
+        tupleDiv.innerHTML = `\\((${tuple.join(',')})\\)`;
+        groupDiv.appendChild(tupleDiv);
+
+        // Input cell
+        const input = createInputCell();
+        input.id = `eval-${index}`;
+        groupDiv.appendChild(input);
+
+        flexContainer.appendChild(groupDiv);
+    });
+
+    container.appendChild(flexContainer);
+
+    // Re-typeset MathJax in the new content
+    if (window.MathJax) {
+        MathJax.typesetPromise([container]);
+    }
+}
+
+// Function to check the evaluation answers
+function checkRMEvaluation() {
+    const inputs = document.querySelectorAll('.eval-input');
+    const userAnswers = Array.from(inputs).map(input => parseInt(input.value));
+    const observations = document.getElementById('observation');
+
+    let isCorrect = true;
+    inputs.forEach((input, index) => {
+        if (parseInt(input.value) !== correctAnswers[index]) {
+            isCorrect = false;
+            input.style.backgroundColor = '#ffebee';
+        } else {
+            input.style.backgroundColor = '#e8f5e9';
+        }
+    });
+
+    if (isCorrect) {
+        observations.innerHTML = "Correct! All function evaluations are correct.";
+        observations.style.color = "green";
+    } else {
+        observations.innerHTML = "Some evaluations are incorrect. Please check the highlighted cells.";
+        observations.style.color = "red";
+    }
+}
+
+// Function to go to previous question
+function prevRMQuestion() {
+    document.getElementById('degreeQuestion').style.display = 'block';
+    document.getElementById('evaluationQuestion').style.display = 'none';
+
+    const observations = document.getElementById('observation');
+    observations.innerHTML = "";
+    document.getElementById('degreeInput').value = "";
+
+    // Reset input cell backgrounds
+    document.querySelectorAll('.eval-input').forEach(input => {
+        input.style.backgroundColor = '';
+        input.value = '';
+    });
+}
+
+// Initialize when document is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Update question text to reflect polynomial instead of monomial
+    const questionElement = document.getElementById('monomialQuestion');
+    if (questionElement) {
+        questionElement.innerHTML = `Consider the given Monomial : `;
+    }
+
+    // Typeset initial MathJax content
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
+
+    initializeMonomial();
+    initializeEvalTable();
+
+
 });
 
-// Generate random Reed-Muller code parameters and matrices
-function generateReedMullerCode() {
-    // Generate random m (number of variables) between 2 and 5
-    m = Math.floor(Math.random() * 4) + 2;
-    
-    // Generate random r (order) between 0 and m-1
-    r = Math.floor(Math.random() * m);
-    
-    // Calculate code parameters
-    matrixLength = Math.pow(2, m);
-    
-    // Generate matrices
-    generatorMatrix = generateReedMullerGeneratorMatrix(r, m);
-    parityCheckMatrix = generateReedMullerGeneratorMatrix(m-r-1, m);
-    
-    // Choose random row indices for testing
-    currentLRow = Math.floor(Math.random() * generatorMatrix.length);
-    currentPRow = Math.floor(Math.random() * parityCheckMatrix.length);
-    
-    // Display parameters and matrix information
-    displayCodeParameters();
-    displayMatrixInfo();
-}
-
-// Generate Reed-Muller generator matrix recursively
-function generateReedMullerGeneratorMatrix(r, m) {
-    // Base cases
-    if (r === 0) {
-        // RM(0,m) has only the all-ones vector
-        return [Array(Math.pow(2, m)).fill(1)];
-    }
-    
-    if (r === m) {
-        // RM(m,m) contains all binary vectors of length 2^m
-        const matrix = [];
-        const size = Math.pow(2, m);
-        
-        // First row is all ones (RM(0,m))
-        matrix.push(Array(size).fill(1));
-        
-        // Add identity matrix rows
-        for (let i = 0; i < size - 1; i++) {
-            const row = Array(size).fill(0);
-            row[i + 1] = 1;
-            matrix.push(row);
-        }
-        
-        return matrix;
-    }
-    
-    // Recursive case using Plotkin construction
-    const upperMatrix = generateReedMullerGeneratorMatrix(r, m-1);
-    const lowerMatrix = generateReedMullerGeneratorMatrix(r-1, m-1);
-    
-    const matrix = [];
-    const halfSize = Math.pow(2, m-1);
-    
-    // Add [RM(r,m-1) | RM(r,m-1)]
-    for (let i = 0; i < upperMatrix.length; i++) {
-        const row = [...upperMatrix[i], ...upperMatrix[i]];
-        matrix.push(row);
-    }
-    
-    // Add [0 | RM(r-1,m-1)]
-    for (let i = 0; i < lowerMatrix.length; i++) {
-        const row = Array(halfSize).fill(0).concat(lowerMatrix[i]);
-        matrix.push(row);
-    }
-    
-    return matrix;
-}
-
-// Display Reed-Muller code parameters
-function displayCodeParameters() {
-    const codeParamsElement = document.getElementById('codeParameters');
-    
-    // Calculate dimension of the code (number of rows in generator matrix)
-    const dimension = generatorMatrix.length;
-    
-    // Calculate minimum distance
-    const minDistance = Math.pow(2, m-r);
-    
-    // Format parameters display
-    let paramsHTML = `
-        <p><strong>Reed-Muller Code: RM(${r}, ${m})</strong></p>
-        <p>Code length: ${matrixLength}</p>
-        <p>Dimension: ${dimension}</p>
-        <p>Minimum distance: ${minDistance}</p>
-        <p>Dual code: RM(${m-r-1}, ${m})</p>
-        <p>Generator matrix dimensions: ${dimension} × ${matrixLength}</p>
-        <p>Parity check matrix dimensions: ${parityCheckMatrix.length} × ${matrixLength}</p>
-        <p>Selected rows for testing: Generator[${currentLRow}], Parity[${currentPRow}]</p>
-    `;
-    
-    // Update the HTML
-    codeParamsElement.innerHTML = paramsHTML;
-}
-
-// Display matrix information
-function displayMatrixInfo() {
-    const matrixInfoElement = document.getElementById('matrixInfo');
-    
-    // Only display a limited number of rows if matrices are large
-    const maxRowsToShow = 5;
-    const genRowsToShow = Math.min(generatorMatrix.length, maxRowsToShow);
-    const parityRowsToShow = Math.min(parityCheckMatrix.length, maxRowsToShow);
-    
-    let matrixHTML = "<p><strong>Matrix Information:</strong></p>";
-    
-    // Generator matrix preview
-    matrixHTML += "<p>Generator Matrix (first few rows):</p>";
-    for (let i = 0; i < genRowsToShow; i++) {
-        if (i === currentLRow) {
-            matrixHTML += `<p><strong>Row ${i} (selected): [${generatorMatrix[i].join(" ")}]</strong></p>`;
-        } else {
-            matrixHTML += `<p>Row ${i}: [${generatorMatrix[i].join(" ")}]</p>`;
-        }
-    }
-    if (generatorMatrix.length > maxRowsToShow) {
-        matrixHTML += "<p>... (more rows not shown)</p>";
-    }
-    
-    // Parity check matrix preview
-    matrixHTML += "<p>Parity Check Matrix (first few rows):</p>";
-    for (let i = 0; i < parityRowsToShow; i++) {
-        if (i === currentPRow) {
-            matrixHTML += `<p><strong>Row ${i} (selected): [${parityCheckMatrix[i].join(" ")}]</strong></p>`;
-        } else {
-            matrixHTML += `<p>Row ${i}: [${parityCheckMatrix[i].join(" ")}]</p>`;
-        }
-    }
-    if (parityCheckMatrix.length > maxRowsToShow) {
-        matrixHTML += "<p>... (more rows not shown)</p>";
-    }
-    
-    // Update the HTML
-    matrixInfoElement.innerHTML = matrixHTML;
-}
+// Export functions for global access
+window.checkDegree = checkDegree;
+window.checkRMEvaluation = checkRMEvaluation;
+window.prevRMQuestion = prevRMQuestion;
+window.initializeMonomial = initializeMonomial;
