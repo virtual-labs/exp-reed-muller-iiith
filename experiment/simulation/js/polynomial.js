@@ -191,7 +191,8 @@ function createInputCell() {
     return input;
 }
 
-// Function to initialize the evaluation table horizontally
+// Function to initialize the evaluation table horizontally,
+// grouping each tuple and its input into the same wrapper div
 function initializeEvalTable() {
     const tuples = generateBinaryTuples(maxVariables);
     currentEvalVectors = tuples;
@@ -199,74 +200,46 @@ function initializeEvalTable() {
 
     const container = document.querySelector('.eval-vector-inputs');
     container.innerHTML = '';
+    container.style.display = 'flex';
+    container.style.justifyContent = 'center';
+    // container.style.flexDirection = 'column';
+    container.style.alignItems = 'center';
 
+    // Outer flex container to lay out each tuple+input group in a row
     const flexContainer = document.createElement('div');
     flexContainer.style.display = 'flex';
-    flexContainer.style.flexDirection = 'column';
+    // applies the flex‑wrap style
+    flexContainer.style.flexWrap = 'wrap';
     flexContainer.style.gap = '20px';
     flexContainer.style.alignItems = 'center';
-
-    // Create tuple labels row
-    const tuplesLabelRow = document.createElement('div');
-    tuplesLabelRow.style.display = 'flex';
-    tuplesLabelRow.style.gap = '20px';
-    tuplesLabelRow.style.alignItems = 'center';
-    tuplesLabelRow.style.marginBottom = '10px';
-
-    // Create variables header
-    const variablesHeader = document.createElement('div');
-    variablesHeader.style.width = '120px';
-    variablesHeader.style.textAlign = 'center';
-    variablesHeader.innerHTML = '\\((X_1,X_2,X_3)\\)';
-    tuplesLabelRow.appendChild(variablesHeader);
-
-    // Create Result header
-    const resultHeader = document.createElement('div');
-    resultHeader.style.width = '60px';
-    resultHeader.style.textAlign = 'center';
-    resultHeader.innerHTML = '\\(f(X)\\)';
-    tuplesLabelRow.appendChild(resultHeader);
-
-    // Create tuples row
-    const tuplesRow = document.createElement('div');
-    tuplesRow.style.display = 'flex';
-    tuplesRow.style.gap = '20px';
-    tuplesRow.style.alignItems = 'center';
-
-    // Create inputs row
-    const inputsRow = document.createElement('div');
-    inputsRow.style.display = 'flex';
-    inputsRow.style.gap = '20px';
-    inputsRow.style.alignItems = 'center';
+    flexContainer.style.padding = '20px';
+    // flexContainer.style.overflowX = 'auto';
 
     tuples.forEach((tuple, index) => {
-        // Create tuple display
+        // Wrapper for one tuple + its input
+        const groupDiv = document.createElement('div');
+        // groupDiv.style.display = 'flex';
+        // groupDiv.style.flexDirection = 'column';
+        groupDiv.style.alignItems = 'center';
+        groupDiv.style.gap = '8px';
+
+        // Tuple display
         const tupleDiv = document.createElement('div');
-        tupleDiv.style.width = '120px';
         tupleDiv.style.textAlign = 'center';
         tupleDiv.innerHTML = `\\((${tuple.join(',')})\\)`;
-        tuplesRow.appendChild(tupleDiv);
+        groupDiv.appendChild(tupleDiv);
 
-        // Create input cell
-        const inputContainer = document.createElement('div');
-        inputContainer.style.width = '60px';
-        inputContainer.style.textAlign = 'center';
+        // Input cell
         const input = createInputCell();
         input.id = `eval-${index}`;
-        inputContainer.appendChild(input);
-        inputsRow.appendChild(inputContainer);
+        groupDiv.appendChild(input);
+
+        flexContainer.appendChild(groupDiv);
     });
 
-    flexContainer.appendChild(tuplesLabelRow);
-    flexContainer.appendChild(document.createElement('hr'));
-    flexContainer.appendChild(tuplesRow);
-    flexContainer.appendChild(inputsRow);
     container.appendChild(flexContainer);
 
-    container.style.padding = '20px';
-    container.style.overflowX = 'auto';
-
-    // Typeset the MathJax content
+    // Re-typeset MathJax in the new content
     if (window.MathJax) {
         MathJax.typesetPromise([container]);
     }
