@@ -43,33 +43,31 @@ function generateMonomials(degree, m) {
 // Function to generate a random binary polynomial
 function generateRandomBinaryMonomial() {
     // Generate random number of terms (1 to 4)
-    const numTerms = Math.floor(Math.random() * 4) + 1;
+    const numTerms = 1;
 
     // Clear previous polynomial
     polynomial = [];
     maxPolynomialDegree = 0;
 
-    // Generate terms
-    for (let i = 0; i < numTerms; i++) {
-        // For each term, decide if it's a constant (1) or a monomial
-        const isConstant = Math.random() < 0.2; // 20% chance of being constant
 
-        if (isConstant) {
-            polynomial.push([]); // Empty array represents constant term 1
-        } else {
-            // Generate random degree (1 to maxDegree) for this monomial
-            const degree = Math.floor(Math.random() * maxDegree) + 1;
-            maxPolynomialDegree = Math.max(maxPolynomialDegree, degree);
+    const isConstant = Math.random() < 0.2; // 20% chance of being constant
 
-            // Get all possible monomials of this degree
-            const possibleMonomials = generateMonomials(degree, maxVariables);
-            // Select a random monomial
-            const selectedMonomial = possibleMonomials[Math.floor(Math.random() * possibleMonomials.length)];
+    if (isConstant) {
+        polynomial.push([]); // Empty array represents constant term 1
+    } else {
+        // Generate random degree (1 to maxDegree) for this monomial
+        const degree = Math.floor(Math.random() * maxDegree) + 1;
+        maxPolynomialDegree = Math.max(maxPolynomialDegree, degree);
 
-            // add only if selected monomial is not already present
-            if (!polynomial.find(m => m.join('') === selectedMonomial.join(''))) { polynomial.push(selectedMonomial); }
-        }
+        // Get all possible monomials of this degree
+        const possibleMonomials = generateMonomials(degree, maxVariables);
+        // Select a random monomial
+        const selectedMonomial = possibleMonomials[Math.floor(Math.random() * possibleMonomials.length)];
+
+        // add only if selected monomial is not already present
+        if (!polynomial.find(m => m.join('') === selectedMonomial.join(''))) { polynomial.push(selectedMonomial); }
     }
+
 
     // Format the polynomial for display
     return formatPolynomial(polynomial);
@@ -279,6 +277,23 @@ function prevRMQuestion() {
     observations.innerHTML = "";
     document.getElementById('degreeInput').value = "";
 
+    // Reset input cell backgrounds
+    document.querySelectorAll('.eval-input').forEach(input => {
+        input.style.backgroundColor = '';
+        input.value = '';
+    });
+}
+
+function resetQuestion() {
+    // Reset the polynomial and evaluation table
+    initializeMonomial();
+    initializeEvalTable();
+    const observations = document.getElementById('observation');
+    observations.innerHTML = "";
+    observations.style.color = "";
+    document.getElementById('degreeInput').value = "";
+    document.getElementById('degreeQuestion').style.display = 'block';
+    document.getElementById('evaluationQuestion').style.display = 'none';
     // Reset input cell backgrounds
     document.querySelectorAll('.eval-input').forEach(input => {
         input.style.backgroundColor = '';
