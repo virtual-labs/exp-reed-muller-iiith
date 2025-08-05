@@ -142,6 +142,9 @@ function generateBinaryTuples(length) {
 function evaluatePolynomial(variableValues) {
     let result = 0;
 
+    console.log("Evaluating polynomial with variable values:", variableValues);
+    console.log("Polynomial:", polynomial);
+
     // Evaluate each monomial in the polynomial
     for (const monomial of polynomial) {
         let monomialResult = 1;
@@ -284,6 +287,51 @@ function prevRMQuestion() {
         input.style.backgroundColor = '';
         input.value = '';
     });
+}
+
+// Function to reset the question
+function resetQuestion() {
+    // Reset polynomial and evaluation table
+    initializePolynomial();
+    initializeEvalTable();
+
+    // Reset degree input and observations
+    const degreeInput = document.getElementById('degreeInput');
+    degreeInput.value = '';
+    const observations = document.getElementById('observation');
+    observations.innerHTML = '';
+
+    // Reset input cell backgrounds
+    document.querySelectorAll('.eval-input').forEach(input => {
+        input.style.backgroundColor = '';
+        input.value = '';
+    });
+
+    // Show the degree question again
+    document.getElementById('degreeQuestion').style.display = 'block';
+    document.getElementById('evaluationQuestion').style.display = 'none';
+
+    // Re-typeset MathJax
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
+    console.log("Question reset successfully.");
+    // Re-initialize polynomial to ensure new question
+    initializePolynomial();
+    // console.log("Polynomial re-initialized.");
+    // Reset currentEvalVectors and correctAnswers
+    currentEvalVectors = [];
+    correctAnswers = [];
+    // console.log("Current evaluation vectors and correct answers reset.");
+    // Re-initialize evaluation table
+    initializeEvalTable();
+    // console.log("Evaluation table re-initialized.");
+    // Log reset completion
+    // console.log("Reset question completed.");
+    // Log the current state of polynomial and evaluation vectors
+    console.log("Current polynomial:", polynomial);
+    console.log("Current evaluation vectors:", currentEvalVectors);
+    console.log("Current correct answers:", correctAnswers);
 }
 
 // Initialize when document is ready
