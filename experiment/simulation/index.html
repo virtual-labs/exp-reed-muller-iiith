@@ -25,20 +25,20 @@
 
 	<div class="columns is-centered">
 		<div class="column is-one-quarter v-instruction-title">
-			Algebraic Form
+			Evaluation-based encoding
 		</div>
 		<div class="column">
 			<div class="v-tabs">
 				<ul>
 					<li class="is-active" id="Task1">
 						<a>
-							Monomial
+							Monomial evaluation
 						</a>
 					</li>
 
 					<li id="Task2" onclick="window.location.href = 'polynomial.html';">
 						<a>
-							Polynomial
+							Polynomial evaluation
 						</a>
 					</li>
 
@@ -103,7 +103,7 @@
 	<div class="columns is-centered">
 		<div class="column is-11-desktop is-12-tablet is-12-mobile">
 			<div class="v-datalist-container components-list" id="questionStatement">
-				<p id="monomialQuestion"> Consider the given monomial : </p>
+				<p id="monomialQuestion"> Consider the following message monomial. </p>
 				<div id="monomial">
 
 				</div>
@@ -129,8 +129,9 @@
 
 				<section id="evaluationQuestion" style="display:none;">
 					<h3>Reed-Muller Code Evaluation</h3>
-					<p>Enter the evaluation vector values corresponding to each index tuple \((x_1, x_2, \ldots,
-						x_{n})\):</p>
+					<p> Find the codeword in the \(3^{\text{rd}}\) order Reed-Muller code corresponding to this given monomial.
+						Do this by entering the evaluations at tuples \((x_1, x_2, \ldots, x_{3}) \in \{0,1\}^3\) which are indicated over the text-boxes shown.
+					</p>
 
 					<div class="eval-vector-inputs">
 						<table>

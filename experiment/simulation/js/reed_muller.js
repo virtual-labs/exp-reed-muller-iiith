@@ -263,7 +263,7 @@ function checkRMEvaluation() {
         observations.innerHTML = "Correct! All function evaluations are correct.";
         observations.style.color = "green";
     } else {
-        observations.innerHTML = "Some evaluations are incorrect. Please check the highlighted cells.";
+        observations.innerHTML = "The codeword is incorrect. Please check the evaluations at the cells highlighted in light-red colour.";
         observations.style.color = "red";
     }
 }
