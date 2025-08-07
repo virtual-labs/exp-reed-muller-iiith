@@ -108,7 +108,9 @@ function initializeMonomial() {
         const randomPolynomial = generateRandomBinaryMonomial();
         console.log(polynomialElement)
         // MathJax.typesetClear([polynomialElement]);
-        polynomialElement.innerHTML = `\\(M (\\mathbf{X}) = ${randomPolynomial}\\)`;
+
+        
+        polynomialElement.textContent = `\\(M (\\mathbf{X}) = ${randomPolynomial}\\)`;
 
         if (window.MathJax) {
             console.log(polynomialElement)
@@ -263,7 +265,7 @@ function checkRMEvaluation() {
         observations.innerHTML = "Correct! All function evaluations are correct.";
         observations.style.color = "green";
     } else {
-        observations.innerHTML = "Some evaluations are incorrect. Please check the highlighted cells.";
+        observations.innerHTML = "The codeword is incorrect. Please check the evaluations at the cells highlighted in light-red colour.";
         observations.style.color = "red";
     }
 }
@@ -306,13 +308,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update question text to reflect polynomial instead of monomial
     const questionElement = document.getElementById('monomialQuestion');
     if (questionElement) {
-        questionElement.innerHTML = `Consider the given Monomial : `;
+        questionElement.innerHTML = `Consider the following message monomial.`;
     }
 
-    // Typeset initial MathJax content
-    if (window.MathJax) {
-        MathJax.typesetPromise();
-    }
+    // // Typeset initial MathJax content
+    // if (window.MathJax) {
+    //     MathJax.typesetPromise();
+    // }
+
 
     initializeMonomial();
     initializeEvalTable();
