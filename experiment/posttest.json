@@ -2,38 +2,106 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "The polynomial $f(X_1, X_2) = 1 + X_1$ over $\\mathbb{F}_2$ is used to generate a codeword. What is the codeword if the evaluation points are ordered as $(0,0), (0,1), (1,0), (1,1)$?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "(1, 1, 0, 0)",
+        "b": "(1, 0, 1, 0)",
+        "c": "(0, 0, 1, 1)",
+        "d": "(1, 1, 1, 1)"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Correct. The evaluations are: $f(0,0) = 1+0=1$; $f(0,1) = 1+0=1$; $f(1,0) = 1+1=0$; $f(1,1) = 1+1=0$. This gives the codeword $(1, 1, 0, 0)$.",
+        "b": "Incorrect. This might happen if you mistakenly used the polynomial $1+X_2$.",
+        "c": "Incorrect. This is the codeword for the polynomial $f(X_1, X_2) = X_1$. Remember to include the constant term '1' in your addition.",
+        "d": "Incorrect. This would be the codeword for the constant polynomial $f(X_1, X_2) = 1$."
       },
       "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "The polynomial $f(X_1, X_2, X_3) = X_1 + X_2X_3$ is used to generate a codeword. To which Reed-Muller code does this codeword belong?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "$RM(1, 3)$",
+        "b": "$RM(2, 3)$",
+        "c": "$RM(3, 2)$",
+        "d": "$RM(2, 2)$"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect. The order $r$ of the code $RM(r, m)$ is the *maximum* degree of the polynomial. The degree of the term $X_2X_3$ is 2.",
+        "b": "Correct. For a code $RM(r, m)$, $m$ is the number of variables and $r$ is the maximum degree of the polynomial. Here, we have $m=3$ variables. The degree of $X_1$ is 1, and the degree of $X_2X_3$ is 2. The maximum degree is $r=2$. Thus, the code is $RM(2, 3)$.",
+        "c": "Incorrect. The parameters are swapped. $m$ is the number of variables (3), and $r$ is the degree (2).",
+        "d": "Incorrect. The polynomial has $m=3$ variables, not 2."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "The codeword $(0, 1, 0, 1)$ of length 4 is from a Reed-Muller code in variables $X_1, X_2$. Which polynomial generates this codeword? (Assume evaluation order is $(0,0), (0,1), (1,0), (1,1)$).",
+      "answers": {
+        "a": "$f(X_1, X_2) = X_1$",
+        "b": "$f(X_1, X_2) = X_2$",
+        "c": "$f(X_1, X_2) = X_1 + 1$",
+        "d": "$f(X_1, X_2) = X_1 + X_2$"
+      },
+      "explanations": {
+        "a": "Incorrect. The polynomial $X_1$ produces the codeword $(f(0,0), f(0,1), f(1,0), f(1,1)) = (0, 0, 1, 1)$.",
+        "b": "Correct. Evaluating $f(X_1, X_2) = X_2$ at the points gives: $f(0,0)=0$, $f(0,1)=1$, $f(1,0)=0$, $f(1,1)=1$. This matches the codeword $(0, 1, 0, 1)$.",
+        "c": "Incorrect. The polynomial $X_1+1$ produces the codeword $(1, 1, 0, 0)$.",
+        "d": "Incorrect. The polynomial $X_1+X_2$ produces the codeword $(0, 1, 1, 0)$."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "What is the length of any codeword in the Reed-Muller code $RM(r, m)$?",
+      "answers": {
+        "a": "$2^r$",
+        "b": "$2^m$",
+        "c": "$\\binom{m}{r}$",
+        "d": "$m+r$"
+      },
+      "explanations": {
+        "a": "Incorrect. The length depends on the number of variables, $m$, not the degree, $r$.",
+        "b": "Correct. A codeword is formed by evaluating a polynomial in $m$ variables. Since each variable can be 0 or 1, there are $2^m$ possible input vectors in $\\mathbb{F}_2^m$. The codeword length is the number of evaluation points.",
+        "c": "Incorrect. This expression, $\\binom{m}{r}$, relates to the number of basis functions of a specific degree, which contributes to the code's dimension, not its length.",
+        "d": "Incorrect. The relationship is exponential, not additive."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Let $c_f = (0,0,1,1)$ be the codeword for $f(X_1, X_2) = X_1$ and $c_g = (0,1,0,1)$ be the codeword for $g(X_1, X_2) = X_2$. What is the codeword corresponding to the polynomial $h(X_1, X_2) = f+g = X_1+X_2$?",
+      "answers": {
+        "a": "(0,1,1,1)",
+        "b": "(0,0,0,0)",
+        "c": "(0,1,1,0)",
+        "d": "(1,1,1,1)"
+      },
+      "explanations": {
+        "a": "Incorrect. Remember to perform addition for each position modulo 2 (which is equivalent to a bitwise XOR). For the last position, $1+1=0$.",
+        "b": "Incorrect. The codewords are not identical, so their sum will not be the all-zero codeword.",
+        "c": "Correct. Since RM codes form a vector space, the codeword for the sum of two polynomials is the sum of their individual codewords. Summing component-wise modulo 2 gives: $(0+0, 0+1, 1+0, 1+1) = (0,1,1,0)$.",
+        "d": "Incorrect. This would imply all sums result in 1, which is not the case."
       },
       "correctAnswer": "c",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "What is the lowest order Reed-Muller code that contains the codeword $c = (0, 1, 0, 1, 0, 1, 1, 0)$?",
+      "answers": {
+        "a": "$RM(1, 3)$",
+        "b": "$RM(2, 3)$",
+        "c": "$RM(3, 3)$",
+        "d": "$RM(0, 3)$"
+      },
+      "explanations": {
+        "a": "Incorrect. $RM(1, 3)$ contains codewords generated by polynomials of degree at most 1. The polynomial required to generate this codeword has degree 2.",
+        "b": "Correct. The codeword has length 8, so it is a function of $m=3$ variables. The polynomial that generates this codeword is $f(X_1, X_2, X_3) = X_1X_2 + X_3$. The degree of this polynomial is 2. Therefore, the lowest order code containing it is $RM(2, 3)$.",
+        "c": "Incorrect. While this codeword is technically in $RM(3, 3)$ (because any polynomial of degree 2 is also a polynomial of degree at most 3), the question asks for the *lowest order* code, which is $RM(2, 3)$.",
+        "d": "Incorrect. $RM(0, 3)$ contains only the two constant codewords: the all-zero and the all-one vectors of length 8. This codeword is not constant."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
     }
   ]
 }
