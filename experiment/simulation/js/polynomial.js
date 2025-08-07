@@ -110,7 +110,7 @@ function initializePolynomial() {
         const randomPolynomial = generateRandomBinaryPolynomial();
         console.log(polynomialElement)
         // MathJax.typesetClear([polynomialElement]);
-        polynomialElement.innerHTML = `\\(P (\\mathbf{X}) = ${randomPolynomial}\\)`;
+        polynomialElement.textContent = `\\(P (\\mathbf{X}) = ${randomPolynomial}\\)`;
 
         if (window.MathJax) {
             console.log(polynomialElement)
@@ -339,16 +339,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update question text to reflect polynomial instead of monomial
     const questionElement = document.getElementById('monomialQuestion');
     if (questionElement) {
-        questionElement.innerHTML = `Consider the given Polynomial : `;
+        questionElement.innerHTML = `Consider the following message polynomial.`;
     }
 
-    // Typeset initial MathJax content
-    if (window.MathJax) {
-        MathJax.typesetPromise();
-    }
+    // // Typeset initial MathJax content
+    // if (window.MathJax) {
+    //     MathJax.typesetClear();
+    //     MathJax.typesetPromise();
+    // }
 
     initializePolynomial();
     initializeEvalTable();
+
+
 
 
 });
