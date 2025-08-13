@@ -50,23 +50,17 @@ function generateRandomBinaryMonomial() {
     maxPolynomialDegree = 0;
 
 
-    const isConstant = Math.random() < 0.2; // 20% chance of being constant
+    
+    // Generate random degree (1 to maxDegree) for this monomial
+    const degree = Math.floor(Math.random() * maxDegree) + 1;
+    maxPolynomialDegree = Math.max(maxPolynomialDegree, degree);
+    // Get all possible monomials of this degree
+    const possibleMonomials = generateMonomials(degree, maxVariables);
+    // Select a random monomial
+    const selectedMonomial = possibleMonomials[Math.floor(Math.random() * possibleMonomials.length)];
+    // add only if selected monomial is not already present
+    if (!polynomial.find(m => m.join('') === selectedMonomial.join(''))) { polynomial.push(selectedMonomial); }
 
-    if (isConstant) {
-        polynomial.push([]); // Empty array represents constant term 1
-    } else {
-        // Generate random degree (1 to maxDegree) for this monomial
-        const degree = Math.floor(Math.random() * maxDegree) + 1;
-        maxPolynomialDegree = Math.max(maxPolynomialDegree, degree);
-
-        // Get all possible monomials of this degree
-        const possibleMonomials = generateMonomials(degree, maxVariables);
-        // Select a random monomial
-        const selectedMonomial = possibleMonomials[Math.floor(Math.random() * possibleMonomials.length)];
-
-        // add only if selected monomial is not already present
-        if (!polynomial.find(m => m.join('') === selectedMonomial.join(''))) { polynomial.push(selectedMonomial); }
-    }
 
 
     // Format the polynomial for display

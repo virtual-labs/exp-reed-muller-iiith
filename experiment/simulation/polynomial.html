@@ -31,7 +31,7 @@
 		</div>
 		<div class="column">
 			<div class="v-tabs">
-				<ul>
+				<ul class="taskbar-tabs">
 					<li id="Task1" onclick="window.location.href = 'index.html';">
 						<a>
 							Monomial evaluation
@@ -58,16 +58,10 @@
 					<ul style="list-style: disc;">
 						<b>Quick theory overview:</b>
 						<li>
-							<strong>The conditional distribution of AWGN Channel is given by:</strong>
-							<br>
-							<p style="text-align: center;">\( p(\boldsymbol{y}|\boldsymbol{x})=\frac{1}{(\pi
-								N_0)^{n/2}}e^{-\frac{(||\boldsymbol{y}-\boldsymbol{x}||^2)}{N_0}}\)</p>
-
-							<strong> The estimate of the transmitted codeword is given by:</strong>
-							<p style="text-align: center;">\(\hat{\boldsymbol{x}}=arg_{\boldsymbol{x}\in{\cal
-								C}}\max\frac{1}{(\pi
-								N_0)^{n/2}}e^{-\frac{(||\boldsymbol{y}-\boldsymbol{x}||^2)}{N_0}}=arg_{\boldsymbol{x}\in{\cal
-								C}}\max\langle\boldsymbol{y},\boldsymbol{x}\rangle\)</p>
+							A polynomial is a linear combination of monomials. The degree of the polynomial is the maximum among the degrees of its constituent monomials. 
+						</li>
+						<li>
+							To evaluate a polynomial at some position, we just replace all the variables with the corresponding values to do computation. The only caveat in our case is that computations are done modulo 2.
 						</li>
 					</ul>
 					<br>
@@ -76,26 +70,15 @@
 						<b>Procedure:</b>
 
 						<li>
-							<strong>Step 1:</strong> Enter the likelihoods of \(\boldsymbol{y}\) given codewords and
-							click on the
-							"Check" button to verify the likelihoods.
+							<strong>Step 1:</strong> Enter the degree of polynomial \(P(\textbf{X})\) and click "Check" to verify your answer. If your answer is correct you will move on to the next section.
 						</li>
 						<li>
-							<strong>Step 2:</strong> Select the maximum likelihood estimate codeword from the
-							dropdown.
-						</li>
-						<li>
-							<strong>Step 3:</strong> Click on "Yes" if the maximum likelihood estimate codeword is same
-							as the transmitted codeword, else click on "No". "Next" button will appear after selecting
-							the correct option.
-						<li>
-							<strong>Step 4:</strong> After clicking on the "Next" button, the next question will appear.
-							Select all the received vectors that lead to a decoding error when using maximum likelihood
-							decoding.
+							<strong>Step 2:</strong> For the same polynomial, evaluate it all values in \(\mathbb{F}_2^3\). We assume the variables are indexed as \((X_1, X_2, X_3)\).
 						</li>
 
 
 					</ul>
+					<br>
 				</div>
 			</div>
 		</div>
@@ -131,7 +114,7 @@
 				<section id="evaluationQuestion" style="display:none;">
 					<h3>Reed-Muller Code Evaluation</h3>
 					<p> Find the codeword in the \(3^{\text{rd}}\) order Reed-Muller code corresponding to this given polynomial.
-						Do this by entering the evaluations at tuples \((x_1, x_2, \ldots, x_{3}) \in \{0,1\}^3\) which are indicated over the text-boxes shown.
+						Do this by entering the evaluations at tuples \((X_{1}, X_{2}, X_{3}) \in \{0,1\}^3\) which are indicated over the text-boxes shown.
 					</p>
 
 					<p id="instructionText" class="needs-mathjax"></p>
