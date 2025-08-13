@@ -40,40 +40,52 @@ function generateMonomials(degree, m) {
     return monomials;
 }
 
-// Function to generate a random binary polynomial
 function generateRandomBinaryPolynomial() {
-    // Generate random number of terms (1 to 4)
-    const numTerms = Math.floor(Math.random() * 4) + 1;
+    let hasNonConstantTerm;
+    
+    do {
+        // Reset for each attempt
+        polynomial = [];
+        maxPolynomialDegree = 0;
+        hasNonConstantTerm = false;
+        
+        // Generate random number of terms (1 to 4)
+        const numTerms = Math.floor(Math.random() * 4) + 1;
+        let termsAdded = 0;  // Track actual terms added
 
-    // Clear previous polynomial
-    polynomial = [];
-    maxPolynomialDegree = 0;
+        while (termsAdded < numTerms) {
+            // Decide if this term should be a constant (1) or a monomial
+            const isConstant = Math.random() < 0.2; // 20% chance of being constant
 
-    // Generate terms
-    for (let i = 0; i < numTerms; i++) {
-        // For each term, decide if it's a constant (1) or a monomial
-        const isConstant = Math.random() < 0.2; // 20% chance of being constant
+            if (isConstant) {
+                // Skip if a constant (empty array) already exists
+                if (polynomial.some(term => term.length === 0)) continue; 
+                polynomial.push([]); // Add constant term 1
+                termsAdded++;
+            } else {
+                // Generate random degree (1 to maxDegree) for this monomial
+                const degree = Math.floor(Math.random() * maxDegree) + 1;
+                maxPolynomialDegree = Math.max(maxPolynomialDegree, degree);
 
-        if (isConstant) {
-            polynomial.push([]); // Empty array represents constant term 1
-        } else {
-            // Generate random degree (1 to maxDegree) for this monomial
-            const degree = Math.floor(Math.random() * maxDegree) + 1;
-            maxPolynomialDegree = Math.max(maxPolynomialDegree, degree);
+                // Get all possible monomials of this degree
+                const possibleMonomials = generateMonomials(degree, maxVariables);
+                // Select a random monomial
+                const selectedMonomial = possibleMonomials[Math.floor(Math.random() * possibleMonomials.length)];
 
-            // Get all possible monomials of this degree
-            const possibleMonomials = generateMonomials(degree, maxVariables);
-            // Select a random monomial
-            const selectedMonomial = possibleMonomials[Math.floor(Math.random() * possibleMonomials.length)];
-
-            // add only if selected monomial is not already present
-            if (!polynomial.find(m => m.join('') === selectedMonomial.join(''))) { polynomial.push(selectedMonomial); }
+                // Add only if selected monomial is not already present
+                if (!polynomial.some(m => m.join('') === selectedMonomial.join(''))) {
+                    polynomial.push(selectedMonomial);
+                    termsAdded++;
+                    hasNonConstantTerm = true;
+                }
+            }
         }
-    }
-
+    } while (!hasNonConstantTerm); // Regenerate if we only got constants
+    
     // Format the polynomial for display
     return formatPolynomial(polynomial);
 }
+
 
 function formatPolynomial(poly) {
     if (poly.length === 0) return "0";
@@ -290,7 +302,10 @@ function prevRMQuestion() {
 }
 
 // Function to reset the question
-function resetQuestion() {
+function resetQuestion() {  
+
+    // console.log("Resetting question...[polynomial.js]");
+
     // Reset polynomial and evaluation table
     initializePolynomial();
     initializeEvalTable();
@@ -315,6 +330,8 @@ function resetQuestion() {
     if (window.MathJax) {
         MathJax.typesetPromise();
     }
+
+    console.log("Question reset successfully?????");
     console.log("Question reset successfully.");
     // Re-initialize polynomial to ensure new question
     initializePolynomial();
