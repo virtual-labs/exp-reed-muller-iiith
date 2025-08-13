@@ -1,100 +1,108 @@
 # Theory
 
-## Monomials
+## Monomials and Polynomials over $\mathbb{F}_2$
 
-A monomial is an expression consisting of a single term. It is composed of a constant, a variable, or the product of constants and variables raised to non-negative integer exponents.$\newline$
-For Example: A monomial M with m variables,can be expressed as:$\newline$
- $$M = {x_1}^{i_1}{x_2}^{i_2}{x_3}^{i_3}......{x_m}^{i_m}$$
- where  ${x_1},{x_2},{x_3},......,{x_m}$ are variables, $\newline$
- $\hspace{0.8cm}$ ${i_1},{i_2},{i_3},......,{i_m}$ are non-negative integer exponents corresponding to each variable. $\newline$
+A monomial is an algebraic expression that consists of a single product of variables. For our purposes, we are interested in monomials with $m$ variables, $X_1, X_2, \dots, X_m$, where each variable can only be present or absent. This is because we operate in the binary field $\mathbb{F}_2$, where any variable $X_i$ squared is just itself ($X_i^2 = X_i$). Thus, a monomial can be written as:
+$$ M = X_{j_1} X_{j_2} \dots X_{j_d} $$
+where $\{j_1, j_2, \dots, j_d\}$ is a subset of the variable indices $\{1, 2, \dots, m\}$. The number of variables that are multiplied together in the monomial (i.e., $d$, in the above monomial) is the **degree** of the monomial.
 
- Example : $ (x_1^1x_2^3x_3^7), (x_7^4x_9^9x_{12}^2) $
+A **Boolean polynomial** is a sum of such monomials, with coefficients also from $\mathbb{F}_2$ (meaning, they are either 0 or 1). An example of a polynomial in four variables is:
+$$ f(X_1, X_2, X_3, X_4) = 1 + X_1 + X_3 + X_1X_2 + X_2X_3X_4 $$
+The **degree of a polynomial** is the highest degree among all of its monomials. In the example above, the monomial $X_2X_3X_4$ has degree 3, which is the highest, so the polynomial has degree 3.
 
-## Boolean functions
+## The Evaluation of a Polynomial
 
-A Boolean function of $m$ variables can be represented by a polynomial of degree $m$ over $\mathbb{F}_2$, $f(x_1, x_2, ... x_m)$, where each variable corresponds to a coefficient of the polynomial. The value of the Boolean function for a particular input assignment is then determined by evaluating the polynomial over $\mathbb{F}_2$ using the given input values. $\newline$
+The core operation for constructing Reed-Muller codes is the evaluation of a polynomial. Given a polynomial $f(X_1, \dots, X_m)$ and a specific binary vector $\mathbf{v} = (v_1, v_2, \dots, v_m) \in \mathbb{F}_2^m$, we can evaluate the polynomial by substituting the components of $\mathbf{v}$ for the variables $X_i$.
+$$ \text{Eval}_{\mathbf{v}}(f) = f(v_1, v_2, \dots, v_m) $$
+The result of this evaluation will be either 0 or 1.
 
-The number of distinct Boolean functions in $m$ variables is  the number of distinct binary sequences of length $2^m$, which is $2^{2^m}$ . Every function $\textit{f}$ can be represented as a linear combination of monomials: $\newline$
+The complete **evaluation vector** of a polynomial, denoted $\text{Eval}(f)$, is the ordered list of its evaluations for every single possible input vector in $\mathbb{F}_2^m$. Since there are $2^m$ such vectors, the evaluation vector will have a length of $n=2^m$. We conventionally list the evaluations by taking the input vectors $\mathbf{v} \in \mathbb{F}_2^m$ in lexicographical order (i.e., treating them as binary numbers from 0 to $2^m-1$).
 
-$$f = {a_0}+{a_1}{x_1} +{a_2}{x_2} +···+{a_m}{x_m} +{a_{12}}{x_1}{x_2} +···+{a_{123...m}}{x_1}{x_2}...{x_m}$$
+#### Example: Evaluation of a Polynomial
 
-(Note that for the field $\mathbb{F}_2$, ${x_i}^n = {x_i}$ and ${a_i}^n = {a_i}$)
+Let's consider the polynomial $f(X_1, X_2, X_3) = X_1 + X_2X_3$ over $\mathbb{F}_2^3$. Its degree is 2. To find its evaluation vector, we compute its value for all $2^3 = 8$ input vectors, from $(0,0,0)$ to $(1,1,1)$.
 
-Example : $ f = x_1 + x_2x_4 + x_7 + x_3x_{11}$ $\newline$ 
-$\hspace{1.15cm}$: $ f = x_2 + x_3x_4x_7x_9 + x_5$
+| Input Vector $(v_1, v_2, v_3)$ in lexicographic order| Calculation of $f(v_1, v_2, v_3) = v_1 + v_2v_3$ | Output |
+| :---: | :--- | :---: |
+| $(0,0,0)$ | $0 + (0 \cdot 0) = 0 + 0$ | **0** |
+| $(0,0,1)$ | $0 + (0 \cdot 1) = 0 + 0$ | **0** |
+| $(0,1,0)$ | $0 + (1 \cdot 0) = 0 + 0$ | **0** |
+| $(0,1,1)$ | $0 + (1 \cdot 1) = 0 + 1$ | **1** |
+| $(1,0,0)$ | $1 + (0 \cdot 0) = 1 + 0$ | **1** |
+| $(1,0,1)$ | $1 + (0 \cdot 1) = 1 + 0$ | **1** |
+| $(1,1,0)$ | $1 + (1 \cdot 0) = 1 + 0$ | **1** |
+| $(1,1,1)$ | $1 + (1 \cdot 1) = 1 + 1$ | **0** |
 
-## Evaluation of a Polynomial
-
-Consider the polynomial with $m$ variables over the field $\mathbb{F}_2$. For this polynomial and a binary vector $\textit{z} = (z_1,z_2,....z_m)$ $\in \mathbb{F}^m_2$, we define: $\newline$ $$Eval_{z}(f) = f(z_1,z_2,....z_m)$$ be the evaluation of $\textit{f}$ at the vector $\textit{z}$.
-
-Next we define $\newline$ $$Eval(f) = (Eval_{z}(f) : z \in \mathbb{F}^m_2)$$
-as the evaluation vector of $\textit{f}$ whose coordinates are the evaluations of $\textit{f}$ at all $2^m$ vectors in $\mathbb{F}^m_2$.
-
-Example : Evaluation of $ (x_1 + x_2x_3 + x_3) $ over $\mathbb{F}^3_2$ over all $2^m$ results in $ 01001011 $
+Assembling these output bits in order gives us the evaluation vector:
+$$ \text{Eval}(X_1 + X_2X_3) = (0, 0, 0, 1, 1, 1, 1, 0) $$
 
 ## Reed-Muller Codes
-Reed-Muller codes are among the oldest and most studied families of codes in coding theory and find applications in various fields like telecommunications, digital data storage, and error-correcting memory.
 
-Reed-Muller (RM) codes are linear block codes that are defined by two non-negative integer parameters. The first parameter, m defines the blocklength of the code (which is $n = 2^m$ ). The second parameter is r, where 0 ≤ r ≤ m, that defines the dimension of the code
-$k = \sum_{j=0}^{r}{m \choose j}$. The $\textit{Rate}$ of this code is defined as the ratio $\frac{k}{n} = \frac{k = \sum_{j=0}^{r}{m \choose j}}{2^m}$ which signifies the fraction of the message bits to the number of bits in the codeword. Reed-muller codes are also denoted by RM(m,r). 
+Reed-Muller (RM) codes are a family of linear block codes specified by two parameters: $m$ and $r$, denoted as $RM(r, m)$.
+
+*   The parameter $m$ determines the number of variables in our polynomials, which in turn sets the codeword length to $n = 2^m$.
+*   The parameter $r$ (where $0 \le r \le m$) specifies the maximum allowable degree for our polynomials.
+
+The code $RM(r, m)$ is then formally defined as the set of all evaluation vectors of all possible Boolean polynomials in $m$ variables having a degree of at most $r$.
+
+The number of distinct monomials of degree up to $r$ determines the dimension of the code, $k$. Specifically, the message bits we wish to encode correspond to the coefficients of these monomials. The dimension is thus $k = \sum_{j=0}^{r} \binom{m}{j}$.
 
 ## Encoding of RM Codes
-Typically to encode a message $\boldsymbol{m}$ using a code, the message vector $\boldsymbol{m}$ of length $k$ is multiplied with the generator matrix $G$ to obtain a codeword $\boldsymbol{c}$ of length $n$. Whereas Reed-Muller codes follow a polynomial view encoding approach. $\newline$
-Reed-Muller codes with parameters $m$ and $r$ consist of all the evaluation vectors of polynomials with $m$ variables and degree no larger than $r$. The encoding procedure of RM $(m,r)$ maps the coefficients of the monomials to their corresponding evaluation vectors.
 
-The set of message polynomials for $RM(m,r)$ codes is defined as: $\newline$
+Apart from a standard generator matrix multiplication (which shall be discussed in the another experiment), the encoding process for $RM(r, m)$ maps a message to a polynomial, and then generates the codeword by evaluating that polynomial.
 
-$$ \textit{M} = {M(X_{1}, X_{2}, X_{3}, ..... ,X_{m}) = \sum_{(i_{1},....,i_{m}) \in \{0,1\}^m : \sum_{j=1}^{m}, i_{j} \le r} a_{i_{1}.....i_{m}} X_{1}^{i_{1}}X_{2}^{i_{2}}......X_{m}^{i_{m}} : a_{i_{1}.....i_{m}} \in \mathbb{F}_2 }$$
+1.  **Construct the Polynomial:** Use the message bits as the coefficients for the set of allowed monomials (all those with degree $\le r$) to form a message polynomial $f(X_1, \dots, X_m)$.
+2.  **Generate the Codeword:** Compute the evaluation vector $\text{Eval}(f)$ by evaluating the polynomial for all $2^m$ input vectors in $\mathbb{F}_2^m$. This evaluation vector is the final codeword $\mathbf{c}$.
 
-$RM(m,r)$ code is defined as codeword corresponding to message polynomial $ M(X_{1}, X_{2}, X_{3}, ..... ,X_{m}) = (M(X_{1}, X_{2}, X_{3}, ..... ,X_{m})|_{(X_{1}......X{m}) \in \mathbb{F}^{m}_2}) $ and is of length $ 2^{m} = n $ (Coordinates of the codeword are indexed by the vector from $ \mathbb{F}^{m}_2 $)
+#### Example 1: Encoding for $RM(1, 3)$
 
-$$ RM(m,r) code = \{M(X_{1}, X_{2}, X_{3}, ..... ,X_{m})|_{(X_{1}......X{m}) \in \mathbb{F}^{m}_2} : M(X_{1}, X_{2}, X_{3}, ..... ,X_{m}) \in \textit{M}\} $$
+Let's encode a message using the $RM(1, 3)$ code.
+*   Parameters: $m=3, r=1$.
+*   Codeword length: $n = 2^3 = 8$.
+*   Allowed monomials: Degree $\le 1$. These are $\{1, X_1, X_2, X_3\}$.
+*   Dimension: $k = \binom{3}{0} + \binom{3}{1} = 1 + 3 = 4$.
 
-Example : $ RM (m = 4, r = 2)$ $\newline$
- $ \textit{M} = \{M(X_{1}, X_{2}, X_{3}, ..... ,X_{m}) = a_{1100}X_{1}X_{2} + a_{1010}X_{1}X_{3} + a_{1001}X_{1}X_{4} + a_{0110}X_{2}X_{3} + a_{0101}X_{2}X_{4} + a_{0011}X_{3}X_{4} + a_{1000}X_{1} + a_{0100}X_{2} + a_{0010}X_{3} + a_{0001}X_{4} + a_{0000} : a_{i_{1}i_{2}i_{3}i_{4}} \in \mathbb{F}_2\} $
+Suppose our message is $\mathbf{u} = (1, 1, 0, 1)$. We map these bits to the coefficients of the allowed monomials in a fixed order (e.g., constant, then $X_1$, $X_2$, $X_3$):
+$$ f(X_1, X_2, X_3) = (1) \cdot 1 + (1) \cdot X_1 + (0) \cdot X_2 + (1) \cdot X_3 = 1 + X_1 + X_3 $$
+Now, we generate the 8-bit codeword by evaluating this polynomial:
 
- Message polynomial = $ X_{1}X_{2} + X_{3}$ $\newline$
- Codeword corresponding to this message polynomial = $ (0_{X_{1}X_{2}X_{3}X_{4} = 0000}, 0_{0001}, 1_{0010}, 1,0,0,1,1,0,0,1,1,1,1,0,0) $
+| Input $(v_1, v_2, v_3)$ | $f(v_1, v_2, v_3) = 1 + v_1 + v_3$ | Output |
+| :---: | :---: | :---: |
+| $(0,0,0)$ | $1+0+0$ | **1** |
+| $(0,0,1)$ | $1+0+1$ | **0** |
+| $(0,1,0)$ | $1+0+0$ | **1** |
+| $(0,1,1)$ | $1+0+1$ | **0** |
+| $(1,0,0)$ | $1+1+0$ | **0** |
+| $(1,0,1)$ | $1+1+1$ | **1** |
+| $(1,1,0)$ | $1+1+0$ | **0** |
+| $(1,1,1)$ | $1+1+1$ | **1** |
 
-## Generator Matrix of RM Codes
-The generator matrix $(G_{RM})$ of Reed-Muller codes are formed by it's evaluation vectors.
-$$ G_{RM} =  \{ Eval(X_{i}) : i \subseteq [m], |i| \le r \} $$
+The resulting codeword for the message $(1, 1, 0, 1)$ is $\mathbf{c} = (1, 0, 1, 0, 0, 1, 0, 1)$.
 
-Example : Generator matrix of $RM(4,2)$ $\newline$
-$ G_{RM} =  \{Eval(X_{1}X_{2}), Eval(X_{1}X_{3}), Eval(X_{1}X_{4}), Eval(X_{2}X_{3}), Eval(X_{2}X_{4}), Eval(X_{3}X_{4}),  Eval(X_{1}), Eval(X_{2}), Eval(X_{3}), Eval(X_{4}), Eval(1)\} $
+#### Example 2: Encoding for $RM(2, 4)$
 
-$ G_{RM} = $
+Let's examine a more complex example. Consider the $RM(2, 4)$ code.
+*   Parameters: $m=4, r=2$.
+*   Codeword length: $n = 2^4 = 16$.
+*   Allowed monomials: All monomials with degree 0, 1, or 2. This includes $1$, $\{X_1, X_2, X_3, X_4\}$, and $\{X_1X_2, X_1X_3, X_1X_4, X_2X_3, X_2X_4, X_3X_4\}$.
+*   Dimension: $k = \binom{4}{0} + \binom{4}{1} + \binom{4}{2} = 1 + 4 + 6 = 11$.
 
-$$\[ \left( \begin{matrix}
-$Eval(X_{1}X_{2})$ \\
-$Eval(X_{1}X_{3})$ \\
-$Eval(X_{1}X_{4})$ \\
-$Eval(X_{2}X_{3})$ \\
-$Eval(X_{2}X_{4})$ \\
-$Eval(X_{3}X_{4})$ \\
-$Eval(X_{1})$ \\
-$Eval(X_{2})$ \\
-$Eval(X_{3})$ \\
-$Eval(X_{4})$ \\
-$Eval(1)$ 
-\end{matrix} \right)
-=
-\left( \begin{matrix}
-0&0&0&1&0&0&0&1&0&0&0&1&0&0&0&1 \\
-0&0&0&0&0&1&0&1&0&0&0&0&0&1&0&1 \\
-0&0&0&0&0&0&0&0&0&1&0&1&0&1&0&1 \\
-0&0&0&0&0&0&1&1&0&0&0&0&0&0&1&1 \\
-0&0&0&0&0&0&0&0&0&0&1&1&0&0&1&1 \\
-0&0&0&0&0&0&0&0&0&0&1&1&0&0&1&1 \\
-0&0&0&0&0&0&0&0&0&0&0&0&1&1&1&1 \\
-0&1&0&1&0&1&0&1&0&1&0&1&0&1&0&1 \\
-0&0&1&1&0&0&1&1&0&0&1&1&0&0&1&1 \\
-0&0&0&0&1&1&1&1&0&0&0&0&1&1&1&1 \\
-0&0&0&0&0&0&0&0&1&1&1&1&1&1&1&1 \\
-\end{matrix} \right)
-\]$$
+Let's say our 11-bit message corresponds to a message polynomial $f(X_1, X_2, X_3, X_4) = X_1X_2 + X_3$. This is a valid polynomial because its degree is 2, which is $\le r$.
 
+To find the codeword, we must evaluate this polynomial for all 16 input vectors from $(0,0,0,0)$ to $(1,1,1,1)$.
 
-## Parity Check Matrix of RM Codes
+-   For input $(0,0,0,0)$: $f(0,0,0,0) = (0 \cdot 0) + 0 = 0$.
+-   For input $(0,0,0,1)$: $f(0,0,0,1) = (0 \cdot 0) + 0 = 0$. This is incorrect. $f(0,0,0,1) = (0 \cdot 0) + 0 = 0$ is wrong, it should be $f(0,0,0,1) = 0 \cdot 0 + 0 = 0$ which is correct. The next one is $f(0,0,1,0) = 0 \cdot 0 + 1 = 1$. Let me re-evaluate the calculation in the previous turn.
 
-## Minimum Distance of RM codes
+Let's re-calculate for $f(X_1, X_2, X_3, X_4) = X_1X_2 + X_3$.
+The evaluation depends on the values of $X_1, X_2$ and $X_3$.
+The input vectors are $(v_1, v_2, v_3, v_4)$.
+
+-   If $v_1=0, v_2=0$: $F = 0 \cdot 0 + v_3 = v_3$. For inputs $(0000, 0001, 0010, 0011)$, $v_3$ is $(0,0,1,1)$. So outputs are $(0,0,1,1)$.
+-   If $v_1=0, v_2=1$: $F = 0 \cdot 1 + v_3 = v_3$. For inputs $(0100, 0101, 0110, 0111)$, $v_3$ is $(0,0,1,1)$. So outputs are $(0,0,1,1)$.
+-   If $v_1=1, v_2=0$: $F = 1 \cdot 0 + v_3 = v_3$. For inputs $(1000, 1001, 1010, 1011)$, $v_3$ is $(0,0,1,1)$. So outputs are $(0,0,1,1)$.
+-   If $v_1=1, v_2=1$: $F = 1 \cdot 1 + v_3 = 1+v_3$. For inputs $(1100, 1101, 1110, 1111)$, $v_3$ is $(0,0,1,1)$. So outputs are $(1+0, 1+0, 1+1, 1+1) = (1,1,0,0)$.
+
+Concatenating these blocks gives the full 16-bit codeword:
+$$ \mathbf{c} = (0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0) $$
+This vector is one of the valid codewords in the $RM(2, 4)$ code space.

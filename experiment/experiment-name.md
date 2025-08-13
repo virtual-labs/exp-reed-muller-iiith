@@ -1,1 +1,1 @@
-### Reed-Muller Codes - Polynomial View Encoding
+### Reed-Muller Codes - Polynomial View of Encoding
