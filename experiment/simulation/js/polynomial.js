@@ -307,7 +307,13 @@ function resetQuestion() {
     // console.log("Resetting question...[polynomial.js]");
 
     // Reset polynomial and evaluation table
-    initializePolynomial();
+    let previousPolynomial = [...polynomial]; // Store the previous polynomial
+
+    // Ensure the new polynomial is different from the previous one
+    do {
+        initializePolynomial();
+    } while (JSON.stringify(polynomial) === JSON.stringify(previousPolynomial));
+
     initializeEvalTable();
 
     // Reset degree input and observations
