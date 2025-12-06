@@ -281,15 +281,26 @@ function prevRMQuestion() {
 }
 
 function resetQuestion() {
-    // Reset the polynomial and evaluation table
-    initializeMonomial();
+    // Store the previous polynomial
+    const previousPolynomial = JSON.stringify(polynomial);
+
+    // Ensure a new polynomial is generated
+    do {
+        polynomial = [];
+        maxPolynomialDegree = 0;
+        initializeMonomial();
+    } while (JSON.stringify(polynomial) === previousPolynomial);
+
+    // Reset the evaluation table
     initializeEvalTable();
+
     const observations = document.getElementById('observation');
     observations.innerHTML = "";
     observations.style.color = "";
     document.getElementById('degreeInput').value = "";
     document.getElementById('degreeQuestion').style.display = 'block';
     document.getElementById('evaluationQuestion').style.display = 'none';
+
     // Reset input cell backgrounds
     document.querySelectorAll('.eval-input').forEach(input => {
         input.style.backgroundColor = '';
