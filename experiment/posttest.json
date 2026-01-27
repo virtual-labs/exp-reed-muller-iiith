@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "The polynomial $f(X_1, X_2) = 1 + X_1$ over $\\mathbb{F}_2$ is used to generate a codeword. What is the codeword if the evaluation points are ordered as $(0,0), (0,1), (1,0), (1,1)$?",
+      "question": "1. The polynomial $f(X_1, X_2) = 1 + X_1$ over $\\mathbb{F}_2$ is used to generate a codeword. What is the codeword if the evaluation points are ordered as $(0,0), (0,1), (1,0), (1,1)$?",
       "answers": {
         "a": "(1, 1, 0, 0)",
         "b": "(1, 0, 1, 0)",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "The polynomial $f(X_1, X_2, X_3) = X_1 + X_2X_3$ is used to generate a codeword. To which Reed-Muller code does this codeword belong?",
+      "question": "2. The polynomial $f(X_1, X_2, X_3) = X_1 + X_2X_3$ is used to generate a codeword. To which Reed-Muller code does this codeword belong?",
       "answers": {
         "a": "$RM(1, 3)$",
         "b": "$RM(2, 3)$",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "The codeword $(0, 1, 0, 1)$ of length 4 is from a Reed-Muller code in variables $X_1, X_2$. Which polynomial generates this codeword? (Assume evaluation order is $(0,0), (0,1), (1,0), (1,1)$).",
+      "question": "3. The codeword $(0, 1, 0, 1)$ of length 4 is from a Reed-Muller code in variables $X_1, X_2$. Which polynomial generates this codeword? (Assume evaluation order is $(0,0), (0,1), (1,0), (1,1)$).",
       "answers": {
         "a": "$f(X_1, X_2) = X_1$",
         "b": "$f(X_1, X_2) = X_2$",
@@ -53,7 +53,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "What is the length of any codeword in the Reed-Muller code $RM(r, m)$?",
+      "question": "4. What is the length of any codeword in the Reed-Muller code $RM(r, m)$?",
       "answers": {
         "a": "$2^r$",
         "b": "$2^m$",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Let $c_f = (0,0,1,1)$ be the codeword for $f(X_1, X_2) = X_1$ and $c_g = (0,1,0,1)$ be the codeword for $g(X_1, X_2) = X_2$. What is the codeword corresponding to the polynomial $h(X_1, X_2) = f+g = X_1+X_2$?",
+      "question": "5. Let $c_f = (0,0,1,1)$ be the codeword for $f(X_1, X_2) = X_1$ and $c_g = (0,1,0,1)$ be the codeword for $g(X_1, X_2) = X_2$. What is the codeword corresponding to the polynomial $h(X_1, X_2) = f+g = X_1+X_2$?",
       "answers": {
         "a": "(0,1,1,1)",
         "b": "(0,0,0,0)",
@@ -87,7 +87,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "What is the lowest order Reed-Muller code that contains the codeword $c = (0, 1, 0, 1, 0, 1, 1, 0)$?",
+      "question": "6. What is the lowest order Reed-Muller code that contains the codeword $c = (0, 1, 0, 1, 0, 1, 1, 0)$?",
       "answers": {
         "a": "$RM(1, 3)$",
         "b": "$RM(2, 3)$",
