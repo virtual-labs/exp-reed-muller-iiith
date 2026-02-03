@@ -1,17 +1,17 @@
 ### Monomials and Polynomials over $\mathbb{F}_2$
 
 A monomial is an algebraic expression that consists of a single product of variables. For our purposes, we are interested in monomials with $m$ variables, $X_1, X_2, \dots, X_m$, where each variable can only be present or absent. This is because we operate in the binary field $\mathbb{F}_2$, where any variable $X_i$ squared is just itself ($X_i^2 = X_i$). Thus, a monomial can be written as:
-$$ M = X*{j_1} X*{j*2} \dots X*{j_d} $$
+$$ M = X*{j_1} X*{j*2} \dots X*{j_d} \tag{1}$$
 where $\{j_1, j_2, \dots, j_d\}$ is a subset of the variable indices $\{1, 2, \dots, m\}$. The number of variables that are multiplied together in the monomial (i.e., $d$, in the above monomial) is the **degree** of the monomial.
 
 A **Boolean polynomial** is a sum of such monomials, with coefficients also from $\mathbb{F}_2$ (meaning, they are either 0 or 1). An example of a polynomial in four variables is:
-$$ f(X_1, X_2, X_3, X_4) = 1 + X_1 + X_3 + X_1X_2 + X_2X_3X_4 $$
+$$ f(X_1, X_2, X_3, X_4) = 1 + X_1 + X_3 + X_1X_2 + X_2X_3X_4 \tag{2}$$
 The **degree of a polynomial** is the highest degree among all of its monomials. In the example above, the monomial $X_2X_3X_4$ has degree 3, which is the highest, so the polynomial has degree 3.
 
 ### The Evaluation of a Polynomial
 
 The core operation for constructing Reed-Muller codes is the evaluation of a polynomial. Given a polynomial $f(X_1, \dots, X_m)$ and a specific binary vector $\mathbf{v} = (v_1, v_2, \dots, v_m) \in \mathbb{F}_2^m$, we can evaluate the polynomial by substituting the components of $\mathbf{v}$ for the variables $X_i$.
-$$ \text{Eval}\_{\mathbf{v}}(f) = f(v_1, v_2, \dots, v_m) $$
+$$ \text{Eval}\_{\mathbf{v}}(f) = f(v_1, v_2, \dots, v_m) \tag{3}$$
 The result of this evaluation will be either 0 or 1.
 
 The complete **evaluation vector** of a polynomial, denoted $\text{Eval}(f)$, is the ordered list of its evaluations for every single possible input vector in $\mathbb{F}_2^m$. Since there are $2^m$ such vectors, the evaluation vector will have a length of $n=2^m$. We conventionally list the evaluations by taking the input vectors $\mathbf{v} \in \mathbb{F}_2^m$ in lexicographical order (i.e., treating them as binary numbers from 0 to $2^m-1$).
@@ -32,7 +32,7 @@ Let's consider the polynomial $f(X_1, X_2, X_3) = X_1 + X_2X_3$ over $\mathbb{F}
 |                       $(1,1,1)$                       | $1 + (1 \cdot 1) = 1 + 1$                        | **0**  |
 
 Assembling these output bits in order gives us the evaluation vector:
-$$ \text{Eval}(X_1 + X_2X_3) = (0, 0, 0, 1, 1, 1, 1, 0) $$
+$$ \text{Eval}(X_1 + X_2X_3) = (0, 0, 0, 1, 1, 1, 1, 0) \tag{4}$$
 
 ### Reed-Muller Codes
 
@@ -62,7 +62,7 @@ Let's encode a message using the $RM(1, 3)$ code.
 - Dimension: $k = \binom{3}{0} + \binom{3}{1} = 1 + 3 = 4$.
 
 Suppose our message is $\mathbf{u} = (1, 1, 0, 1)$. We map these bits to the coefficients of the allowed monomials in a fixed order (e.g., constant, then $X_1$, $X_2$, $X_3$):
-$$ f(X_1, X_2, X_3) = (1) \cdot 1 + (1) \cdot X_1 + (0) \cdot X_2 + (1) \cdot X_3 = 1 + X_1 + X_3 $$
+$$ f(X_1, X_2, X_3) = (1) \cdot 1 + (1) \cdot X_1 + (0) \cdot X_2 + (1) \cdot X_3 = 1 + X_1 + X_3 \tag{5}$$
 Now, we generate the 8-bit codeword by evaluating this polynomial:
 
 | Input $(v_1, v_2, v_3)$ | $f(v_1, v_2, v_3) = 1 + v_1 + v_3$ | Output |
@@ -104,5 +104,5 @@ The input vectors are $(v_1, v_2, v_3, v_4)$.
 - If $v_1=1, v_2=1$: $F = 1 \cdot 1 + v_3 = 1+v_3$. For inputs $(1100, 1101, 1110, 1111)$, $v_3$ is $(0,0,1,1)$. So outputs are $(1+0, 1+0, 1+1, 1+1) = (1,1,0,0)$.
 
 Concatenating these blocks gives the full 16-bit codeword:
-$$ \mathbf{c} = (0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0) $$
+$$ \mathbf{c} = (0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0) \tag{6}$$
 This vector is one of the valid codewords in the $RM(2, 4)$ code space.
