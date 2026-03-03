@@ -15,6 +15,8 @@
 
 	<script type="text/javascript" id="MathJax-script" async
 		src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
 	<!-- Load d3.js -->
 	<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
@@ -30,13 +32,13 @@
 		<div class="column">
 			<div class="v-tabs">
 				<ul class="taskbar-tabs">
-					<li class="is-active" id="Task1">
+					<li id="Task1" onclick="window.location.href = 'index.html';">
 						<a>
 							Monomial evaluation
 						</a>
 					</li>
 
-					<li id="Task2" onclick="window.location.href = 'polynomial.html';">
+					<li class="is-active" id="Task2">
 						<a>
 							Polynomial evaluation
 						</a>
@@ -56,10 +58,10 @@
 					<ul style="list-style: disc;">
 						<b>Quick theory overview:</b>
 						<li>
-							The degree of a monomial is defined as the sum of exponents of all the variables.
+							A polynomial is a linear combination of monomials. The degree of the polynomial is the maximum among the degrees of its constituent monomials. 
 						</li>
 						<li>
-							To evaluate a monomial at some position, we just replace all the variables with the corresponding values to do computation. The only caveat in our case is that computations are done modulo 2.
+							To evaluate a polynomial at some position, we just replace all the variables with the corresponding values to do computation. The only caveat in our case is that computations are done modulo 2.
 						</li>
 					</ul>
 					<br>
@@ -68,10 +70,10 @@
 						<b>Procedure:</b>
 
 						<li>
-							<strong>Step 1:</strong> Enter the degree of monomial \(M(\textbf{X})\) and click "Check" to verify your answer. If your answer is correct you will move on to the next section.
+							<strong>Step 1:</strong> Enter the degree of polynomial \(P(\textbf{X})\) and click "Check" to verify your answer. If your answer is correct you will move on to the next section.
 						</li>
 						<li>
-							<strong>Step 2:</strong> For the same monomial, evaluate it all values in \(\mathbb{F}_2^3\). We assume the variables are indexed as \((X_1, X_2, X_3)\).
+							<strong>Step 2:</strong> For the same polynomial, evaluate it all values in \(\mathbb{F}_2^3\). We assume the variables are indexed as \((X_1, X_2, X_3)\).
 						</li>
 						<li>
 							<strong>Step 3:</strong> Click "Check" to verify your answer. You can also click "Previous" to go back to the previous question or "New Question" to get a new polynomial.
@@ -88,9 +90,8 @@
 	<div class="columns is-centered">
 		<div class="column is-11-desktop is-12-tablet is-12-mobile">
 			<div class="v-datalist-container components-list" id="questionStatement">
-				<p id="monomialQuestion">  </p>
+				<p id="monomialQuestion"> </p>
 				<div id="monomial">
-
 				</div>
 			</div>
 		</div>
@@ -102,7 +103,7 @@
 			<div class="box-question">
 
 				<section id="degreeQuestion" style="display:block ;">
-					<p style="margin-bottom: 20px;">What is the degree of the message monomial?</p>
+					<p style="margin-bottom: 20px;">What is the degree of the message polynomial?</p>
 
 					<div style="margin-bottom: 20px; vertical-align: middle;">
 						<label for="degreeInput"> Degree: </label> <input type="number" id="degreeInput"
@@ -114,9 +115,12 @@
 
 				<section id="evaluationQuestion" style="display:none;">
 					<h3>Reed-Muller Code Evaluation</h3>
-					<p> Find the codeword in the \(3^{\text{rd}}\) order Reed-Muller code corresponding to this given monomial.
+					<p> Find the codeword in the \(3^{\text{rd}}\) order Reed-Muller code corresponding to this given polynomial.
 						Do this by entering the evaluations at tuples \((X_{1}, X_{2}, X_{3}) \in \{0,1\}^3\) which are indicated over the text-boxes shown.
 					</p>
+
+					<p id="instructionText" class="needs-mathjax"></p>
+
 
 					<div class="eval-vector-inputs">
 						<table>
@@ -153,7 +157,7 @@
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/gh/virtual-labs/virtual-style@0.0.8-b/js/script.js"></script>
-	<script src="./js/reed_muller.js"></script>
+	<script src="./js/polynomial.js"></script>
 </body>
 
 </html>

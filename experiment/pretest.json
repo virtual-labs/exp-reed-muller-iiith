@@ -2,37 +2,88 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "1. Let $f(X) = X^2 + X + 1$ be a polynomial over $\\mathbb{F}_2$. What is the value of f(1) modulo 2?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "0",
+        "b": "1",
+        "c": "3",
+        "d": "2"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect. Substituting $X=1$ gives $f(1) = 1^2 + 1 + 1$. In $\\mathbb{F}_2$, this is $(1 + 1) + 1 = 0 + 1 = 1$.",
+        "b": "Correct. To evaluate $f(1)$, we substitute $X = 1$ into the polynomial: $f(1) = 1^2 + 1 + 1$. In $\\mathbb{F}_2$, arithmetic is modulo 2, so we have $(1 + 1) + 1 = 0 + 1 = 1$.",
+        "c": "Incorrect. This is the result you would get if you were working with regular integers. In $\\mathbb{F}_2$, you must perform the addition modulo 2.",
+        "d": "Incorrect. Remember that $\\mathbb{F}_2$ only contains the elements {0, 1}. The number 2 is equivalent to 0 in this field."
       },
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "2. Let $f(X) = X^3 + X^2 + 1$ be a polynomial over $\\mathbb{F}_2$. What is the value of f(0)?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "0",
+        "b": "1",
+        "c": "X",
+        "d": "2"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect. When substituting $X=0$, the terms with $X$ become 0, but the constant term remains.",
+        "b": "Correct. To evaluate $f(0)$, we substitute $X=0$ into the polynomial: $f(0) = 0^3 + 0^2 + 1 = 0 + 0 + 1 = 1$.",
+        "c": "Incorrect. The evaluation of a polynomial at a point in the field $\\mathbb{F}_2$ results in a value from that field (0 or 1), not a variable.",
+        "d": "Incorrect. The field $\\mathbb{F}_2$ only contains the elements {0, 1}."
       },
-      "correctAnswer": "c",
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "3. What is the sum of the polynomials $f(X) = X^2 + X$ and $g(X) = X^2 + 1$ in $\\mathbb{F}_2[X]$?",
+      "answers": {
+        "a": "$2X^2 + X + 1$",
+        "b": "$X + 1$",
+        "c": "$X^2$",
+        "d": "$X$"
+      },
+      "explanations": {
+        "a": "Incorrect. You must perform the addition of the coefficients modulo 2. The coefficient of the $X^2$ term should be $1 + 1 = 0$ in $\\mathbb{F}_2$.",
+        "b": "Correct. We add the polynomials by adding the coefficients of like terms modulo 2: $(X^2 + X) + (X^2 + 1) = (1+1)X^2 + (1+0)X + (0+1) = 0X^2 + 1X + 1 = X + 1$.",
+        "c": "Incorrect. This would be the case if the $X$ and $1$ terms cancelled each other, which they do not.",
+        "d": "Incorrect. Remember that in $\\mathbb{F}_2$, subtracting 1 is the same as adding 1, since $1 + 1 = 0$. So $X - 1$ is the same as $X + 1$."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "4. What is the degree of the polynomial $f(X) = (X^3 + X^2 + 1) + (X^3 + X + 1)$?",
+      "answers": {
+        "a": "3",
+        "b": "2",
+        "c": "6",
+        "d": "1"
+      },
+      "explanations": {
+        "a": "Incorrect. The degree is the highest power of $X$ with a non-zero coefficient. Notice that the $X^3$ terms will cancel each other out because their coefficients sum to $1+1=0$ in $\\mathbb{F}_2$.",
+        "b": "Correct. First, we sum the polynomials: $f(X) = (1+1)X^3 + (1+0)X^2 + (0+1)X + (1+1) = 0X^3 + 1X^2 + 1X + 0 = X^2 + X$. The highest power of $X$ with a non-zero coefficient is 2, so the degree is 2.",
+        "c": "Incorrect. You should add the polynomials, not multiply them. The degree of a sum is at most the maximum of the individual degrees.",
+        "d": "Incorrect. The term $X^2$ does not cancel out, so the degree is higher than 1."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "5. Which of the following is a root of the polynomial $f(X) = X^2 + 1$ in $\\mathbb{F}_2$?",
+      "answers": {
+        "a": "0",
+        "b": "1",
+        "c": "Both 0 and 1",
+        "d": "Neither 0 nor 1"
+      },
+      "explanations": {
+        "a": "Incorrect. Let's check: $f(0) = 0^2 + 1 = 1$. Since $f(0) \\neq 0$, 0 is not a root.",
+        "b": "Correct. A root is a value that makes the polynomial evaluate to 0. Let's evaluate $f(1)$: $f(1) = 1^2 + 1 = 1 + 1 = 0$ in $\\mathbb{F}_2$. Therefore, 1 is a root.",
+        "c": "Incorrect. We checked that $f(0) = 1$, so 0 is not a root.",
+        "d": "Incorrect. We found that $f(1) = 0$, so 1 is a root of the polynomial."
+      },
+      "correctAnswer": "b",
       "difficulty": "beginner"
     }
   ]
