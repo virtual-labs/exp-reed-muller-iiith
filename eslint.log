@@ -1,0 +1,20 @@
+
+/home/runner/work/exp-reed-muller-iiith/exp-reed-muller-iiith/experiment/simulation/js/polynomial.js
+   12:10  warning  'formatMonomial' is defined but never used        no-unused-vars
+  129:13  warning  'MathJax' is not defined                          no-undef
+  259:9   warning  'MathJax' is not defined                          no-undef
+  266:11  warning  'userAnswers' is assigned a value but never used  no-unused-vars
+  305:10  warning  'resetQuestion' is defined but never used         no-unused-vars
+  337:9   warning  'MathJax' is not defined                          no-undef
+
+/home/runner/work/exp-reed-muller-iiith/exp-reed-muller-iiith/experiment/simulation/js/reed_muller.js
+    8:5   warning  'currentEvalVectors' is assigned a value but never used  no-unused-vars
+   12:10  warning  'formatMonomial' is defined but never used               no-unused-vars
+   46:11  warning  'numTerms' is assigned a value but never used            no-unused-vars
+  111:13  warning  'MathJax' is not defined                                 no-undef
+  238:9   warning  'MathJax' is not defined                                 no-undef
+  245:11  warning  'userAnswers' is assigned a value but never used         no-unused-vars
+  283:10  warning  'resetQuestion' is defined but never used                no-unused-vars
+
+✖ 13 problems (0 errors, 13 warnings)
+
