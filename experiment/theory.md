@@ -1,7 +1,7 @@
 ### Monomials and Polynomials over $\mathbb{F}_2$
 
 A monomial is an algebraic expression that consists of a single product of variables. For our purposes, we are interested in monomials with $m$ variables, $X_1, X_2, \dots, X_m$, where each variable can only be present or absent. This is because we operate in the binary field $\mathbb{F}_2$, where any variable $X_i$ squared is just itself ($X_i^2 = X_i$). Thus, a monomial can be written as:
-$$ M = X*{j_1} X*{j*2} \dots X*{j_d} \tag{1}$$
+$$ M = X_{j_1} X_{j_2} \dots X_{j_d} \tag{1}$$
 where $\{j_1, j_2, \dots, j_d\}$ is a subset of the variable indices $\{1, 2, \dots, m\}$. The number of variables that are multiplied together in the monomial (i.e., $d$, in the above monomial) is the **degree** of the monomial.
 
 A **Boolean polynomial** is a sum of such monomials, with coefficients also from $\mathbb{F}_2$ (meaning, they are either 0 or 1). An example of a polynomial in four variables is:
